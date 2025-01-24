@@ -65,7 +65,7 @@ const inventory = [
 
 // Task 1: Set the view engine to EJS. 
 
-
+app.set("view engine","ejs")
 
 app.use((req, res, next) => {
   console.log(req.method + " " + req.path)
@@ -74,28 +74,47 @@ app.use((req, res, next) => {
 
 // Task 1: Set up the static middleware
 
-
+app.use(express.static(__dirname + "/public"))
 
 // Task 2: Set up the route handler for / to send back the index.html file
-
+app.get("/", (req,res) => {
+  res.sendFile(__dirname + "/public/index.html")
+})
 
 
 // Task 3: Set up the route handler for /mens which sends back category.ejs with the men's category object
-
+app.get("/mens", (req,res) => {
+  res.render("category.ejs", inventory[0])
+})
 
 
 // Task 4: Plug in the values in category.ejs to get the page working
 // PINK ONLY: Set up a route handler for /womens to pass in similar data for women's
-
+app.get("/womens", (req,res) => {
+  res.render("category.ejs", inventory[1])
+})
 
 
 // Task 5: Set up the route handler for /item/0 which sends back the first item in product.ejs
-
+app.get("/item/:index", (req,res) => {
+  let index = req.params.index
+  if(index<3){
+    res.render("product.ejs", inventory[0].items[index])
+  }else if(index>=3 && index<6){
+    res.render("product.ejs", inventory[1].items[index])
+  }else{
+    res.status(404).send("Not found")
+  }
+})
 
 
 // Task 6: Plug in the values in product.ejs to get the page working
 // Extra credit: modify the /item/0 route handler to have dynamic path parameter and return any item's data
 
+let btn = document.querySelector("#btn")
+btn.addEventListener("onclick", function(event){
+  res.send("<h6>You clicked the button</h6>")
+})
 app.listen(3000, () => {
   console.log("Server running")
 })
