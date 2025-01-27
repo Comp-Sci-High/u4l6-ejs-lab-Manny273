@@ -101,7 +101,7 @@ app.get("/item/:index", (req,res) => {
   if(index<3){
     res.render("product.ejs", inventory[0].items[index])
   }else if(index>=3 && index<6){
-    res.render("product.ejs", inventory[1].items[index])
+    res.render("product.ejs", inventory[1].items[index-3])
   }else{
     res.status(404).send("Not found")
   }
